@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.7)
+
+project(ryanclient)
+add_library(ryanclient SHARED ryanclient.c)
+find_package(DynamoRIO)
+if (NOT DynamoRIO_FOUND)
+    message(FATAL_ERROR "DynamoRIO package required to build")
+endif(NOT DynamoRIO_FOUND)
+configure_DynamoRIO_client(ryanclient)
+use_DynamoRIO_extension(ryanclient drmgr)
