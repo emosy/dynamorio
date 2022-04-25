@@ -11,6 +11,17 @@ ${workspaceFolder}/**
 and add these defines (assuming you're developing on x64 Linux):
 LINUX
 X86_64
-7. when you go back to the build folder and do cmake .. then make -j, it should just link your client now!
+7. make a CMakeLists.txt in your client folder and add the following:
+cmake_minimum_required(VERSION 3.7)
 
-8. im not yet sure how to actually RUN dynamorio with the client we made... tba!
+project(ryanclient)
+add_library(ryanclient SHARED ryanclient.c)
+find_package(DynamoRIO)
+if (NOT DynamoRIO_FOUND)
+    message(FATAL_ERROR "DynamoRIO package required to build")
+endif(NOT DynamoRIO_FOUND)
+configure_DynamoRIO_client(ryanclient)
+use_DynamoRIO_extension(ryanclient drmgr)
+8. when you go back to the build folder and do cmake .. then make -j, it should just link your client now!
+
+9. im not yet sure how to actually RUN dynamorio with the client we made... tba!
